@@ -13,8 +13,6 @@
 
 <!-- /code_chunk_output -->
 
-
-
 - [参考: 为 win10 打造 Linux 终端(非 wsl)](https://juejin.im/post/5bd5a08cf265da0add520772)
 - 本文中的部分内容可能过期，最新配置请前往 github 查看：[链接](https://github.com/xnng/my-git-bash)
 - [参考: Tmux入门教程](https://juejin.im/post/5a8917336fb9a0633e51ddb9)

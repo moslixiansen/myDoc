@@ -11,6 +11,7 @@
   - [git rebase](#git-rebase)
   - [撤销 git 操作](#撤销-git-操作)
   - [换行符问题](#换行符问题)
+  - [~/.gitconfig 文件](#~gitconfig-文件)
 
 <!-- /code_chunk_output -->
 
@@ -67,6 +68,12 @@ export LANG="zh_CN.UTF-8"
 git config --global i18n.commitencoding utf-8
 git config --global i18n.logoutputencoding utf-8
 export LESSCHARSET=utf-8
+
+# 修改 .bashrc 文件
+vim ~/.bashrc
+# 增加以下两行， 解决 shell 终端的乱码问题
+export LANG="zh_CN.UTF-8"
+export LC_ALL="zh_CN.UTF-8"
 ```
 
 ### 规范 git commit
@@ -116,3 +123,22 @@ git rebase master
 - [Git以正确处理行结尾, 干货!](https://help.github.com/en/articles/configuring-git-to-handle-line-endings)
 - [windows下和linux下，git换行符变化，^M问题，git diff](https://www.iteye.com/blog/fantaxy025025-2287251)
 - [Git处理换行符问题](https://blog.csdn.net/github_30605157/article/details/56680990)
+
+### ~/.gitconfig 文件
+
+```bash
+[user]
+        email = moslixiansen@163.com
+        name = moslixiansen
+[i18n]
+        logoutputencoding = utf-8
+        commitencoding = utf-8
+[i18n "commit"]
+        encoding = utf-8
+[gui]
+        encoding = utf-8
+[core]
+        quotepath = false
+        preloadindex = true
+        fscache = true
+```

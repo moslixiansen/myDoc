@@ -1,9 +1,5 @@
 # 常用工具配置文件
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
 - [vimrc](#vimrc)
 - [bashrc](#bashrc)
 - [ssh](#ssh)
@@ -19,12 +15,30 @@
 - 配置:
   
 ``` vim
-set number  "显示行号
-set relativenumber  "显示相对行号
-set autoindent  "按下下回车键后，下一行的缩进会自动跟上一行的缩进保持一致。
-set softtabstop=2  "Tab 转转为多少个空格。
-set cursorline  "光标标所在的当前行高亮。
-syntax on  "打开语语法高亮。。自动识别代码，使用多种颜色显示。
+set nocompatible              " be iMproved, required
+filetype off                  " required
+" set the runtime path to include Vundle and initialize
+" set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
+" Plugin 'VundleVim/Vundle.vim'
+" Plugin 'tpope/vim-fugitive'
+" Plugin 'tpope/vim-surround'
+" Plugin 'EasyMotion'
+" Plugin 'jnurmine/Zenburn'
+" call vundle#end()            " required
+" filetype plugin indent on    " required
+" "
+" colors zenburn
+syntax enable
+syntax on " 自动语法高亮
+set number "显示行号
+set relativenumber "显示相对行号
+set shiftwidth=4
+set tabstop=4 "表示Tab代表4个空格的宽度
+set expandtab "表示Tab自动转换成空格
+set autoindent "表示换行后自动缩进
+set smartindent "智能对齐
+set hlsearch
 ```
 
 - [参考: 阮一峰 Vim 配置入门](http://www.ruanyifeng.com/blog/2018/09/vimrc.html)
@@ -34,45 +48,83 @@ syntax on  "打开语语法高亮。。自动识别代码，使用多种颜色�
 - 路径: ~/.bashrc
 - 配置:
 
-```vim
-" bash 相关
+```bash
+# bash 相关
 alias bashalias='sudo vim ~/.bashrc'
 
-" ssh 相关
+# ssh 相关
 alias sshconfig='sudo vim ~/.ssh/config'
 alias hgxcs='ssh hgxcs'
 alias hgxsc='ssh hgxsc'
 alias hgxamdin='ssh hgxadmin'
 alias vitacs='ssh vitacs'
 
-
-" 常用配置
+# 常用配置
 alias sshpub='cat ~/.ssh/id_rsa.pub'
-
-" 常改配置
-alias sshconfig='sudo vim ~/.ssh/config'
-alias vimrc='sudo vim "/etc/vim/vimrc"'
-
-" 常用命令
 alias .='cd ~'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias e='exit'
 alias cls='clear'
-alias programs='cd /mnt/c/programs'
-alias posapi='cd /mnt/c/programs/posapi'
-alias posmall='cd /mnt/c/programs/posmall'
-alias posadmin='cd /mnt/c/programs/posadmin/posadmin'
-alias lana='cd /mnt/c/programs/lanaHelper'
-alias linxun='cd /mnt/c/programs/linxun-uni'
-alias hgxgj='cd /mnt/c/programs/HGS-Manager-Multiple'
-alias hgxdoc='cd /mnt/c/programs/doc'
+alias ll='ls -al'
+alias my='cd /c/programs/my'
+alias hgs='cd /c/programs/hgs'
+alias posapi='cd /c/programs/hgs/posapi'
+alias polaris='cd /c/programs/hgs/polaris'
+alias posadmin='cd /c/programs/hgs/posadmin/posadmin'
 
-" git 相关
+# 常改配置
+alias gitconfig='vim ~/.gitconfig'
+alias sshpub='cat ~/.ssh/id_rsa.pub'
+alias sshconfig='sudo vim ~/.ssh/config'
+alias vimrc='sudo vim "~/.vimrc"'
+# alias vimrc='vim "/c/Program Files/Git/etc/vimrc"'
+
+# git 相关
 alias gs='git status'
 alias ga='git add .'
 alias gc='git cz'
 alias gp='git push'
+
+# tmux 相关
+alias tls='tmux ls'
+
+alias tnhgxcs='tmux new -s hgxcs'
+alias tnhgxsc='tmux new -s hgxsc'
+alias tnvitacs='tmux new -s vitacs'
+alias tnhgxadmin='tmux new -s hgxadmin'
+alias tnposadmin='tmux new -s posadmin'
+
+alias tahgxcs='tmux a -t hgxcs'
+alias tahgxsc='tmux a -t hgxsc'
+alias tavitacs='tmux a -t vitacs'
+alias tahgxadmin='tmux a -t hgxadmin'
+alias taposadmin='tmux a -t posadmin'
+
+alias tkhgxcs='tmux kill-session -t hgxcs'
+alias tkhgxsc='tmux kill-session -t hgxsc'
+alias tkvitacs='tmux kill-session -t vitacs'
+alias tkhgxadmin='tmux kill-session -t hgxadmin'
+alias tkposadmin='tmux kill-session -t posadmin'
+
+
+
+alias sysoff='shutdown -s -t 0'
+alias sysre='shutdown -r -t 0'
+
+alias host='vim /c/Windows/System32/drivers/etc/hosts'
+
+# ssh相关
+alias hgxcs='ssh hgxcs'
+alias aliyun='ssh aliyun'
+alias hgxsc='ssh hgxsc'
+alias hgxadmin='ssh hgxadmin'
+alias vitacs='ssh vitacs'
+alias vultr='ssh vultr'
+
+# 防止 git log 中文乱码
+export LANG="zh_CN.UTF-8"
+export LC_ALL="zh_CN.UTF-8"
 ```
 
 ## ssh
@@ -123,35 +175,25 @@ Host hgxadmin
 
 ## windows Terminal
 
-```JavaScript
-
+```Json
 // To view the default settings, hold "alt" while clicking on the "Settings" button.
 // For documentation on these settings, see: https://aka.ms/terminal-documentation
 
 {
     "$schema": "https://aka.ms/terminal-profiles-schema",
-
-    "defaultProfile": "{2c4de342-38b7-51cf-b940-2309a097f518}",
-
+    "defaultProfile": "{1c4de342-38b7-51cf-b940-2309a097f679}",
+    "confirmCloseAllTabs": false, //是否弹出确认关闭所有窗口
+    "initialCols": 200, //窗口行宽
+    "initialRows": 50, //窗口列宽
     "profiles":
     [
         {
-		  "acrylicOpacity": 0.75, // 透明度
-		  "closeOnExit": true, // 关闭的时候退出命令终端
-		  "commandline": "C:\\Program Files\\Git\\bin\\bash.exe", // gitbash的命令行所在位置
-		  "cursorColor": "#FFFFFF", // 光标颜色
-		  "cursorShape": "bar", // 这个，还没发现啥作用
-		  "fontFace": "Fira Code Medium", // 字体配置，如果你电脑没有这个字体就不要用这段配置了
-		  "fontSize": 14, // 终端字体大小
-		  "guid": "{1c4de342-38b7-51cf-b940-2309a097f679}", // 唯一的标识，这个记得改成和其他的终端不一样就行了，随便起一个
-		  "historySize": 9001, // emmm
-		  "icon": "C:\\Program Files\\Git\\bin\\gitBash.png", // git的图标，打开终端时候会看到
-		  "name": "Bash", // tab栏的标题显示
-		  "padding": "10, 10, 10, 10", // 边距
-		  "snapOnInput": true, // emmm
-		  "startingDirectory": "%USERPROFILE%", // gitbash 启动的位置（默认在C盘的用户里面的就是 ~ ）
-		  "useAcrylic": false // 是否开启透明度
-		},
+            "guid": "{1c4de342-38b7-51cf-b940-2309a097f679}",
+            "name": "Bash",
+            "icon": "C:\\Program Files\\Git\\bin\\gitBash.png", // git的图标，打开终端时候会看到
+            "commandline": "C:\\Program Files\\Git\\bin\\bash.exe",
+            "hidden": false
+        },
         {
             // Make changes here to the powershell.exe profile
             "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
@@ -209,6 +251,67 @@ Host hgxadmin
             ]
         },
         {
+            "keys": ["ctrl+shit+w"], 
+            "command": {"action": "closePane", "split": "vertical"}
+        },
+        {
+            "keys": ["ctrl+shift+v"], 
+            "command": {"action": "splitPane", "split": "vertical"}
+        },
+        {
+            "keys": ["ctrl+shift+h"], 
+            "command": {"action": "splitPane", "split": "horizontal"}
+        },
+        {
+            "keys": ["ctrl+f"],
+            "command": "find"
+        },
+        {
+            "command" : "nextTab",
+            "keys" : 
+            [
+                "ctrl+tab"
+            ]
+        },
+        {
+            "command" : "prevTab",
+            "keys" : 
+            [
+                "ctrl+shift+tab"
+            ]
+        },
+        {
+            "command" : "openSettings",
+            "keys" : 
+            [
+                "ctrl+,"
+            ]
+        },
+        // {
+        //     "command" : "copy",
+        //     "keys" : 
+        //     [
+        //         "ctrl+c"
+        //     ]
+        // },
+        // {
+        //     "command" : "paste",
+        //     "keys" : 
+        //     [
+        //         "ctrl+v"
+        //     ]
+        // },
+        // {
+        //     "keys": ["pgup"], //Content pgup
+        //     "keys": ["ctrl+shift+pgup"], //Window pgup
+        //     "command": "scrollUpPage"
+        // },
+        // {
+        //     "keys": ["pgdn"], //Content pgup
+        //     "keys" :["ctrl+shift+pgdn"], //Window pgdn
+        //     "command": "scrollDownPage",
+        // },
+        {
             "command" : "newTabProfile0",
             "keys" : 
             [
@@ -224,114 +327,51 @@ Host hgxadmin
         },
         {
             "command" : "newTabProfile2",
-            "keys" :
+            "keys" : 
             [
                 "ctrl+shift+3"
             ]
         },
         {
             "command" : "newTabProfile3",
-            "keys" :
+            "keys" : 
             [
                 "ctrl+shift+4"
             ]
         },
         {
             "command" : "newTabProfile4",
-            "keys" :
+            "keys" : 
             [
                 "ctrl+shift+5"
             ]
         },
         {
             "command" : "newTabProfile5",
-            "keys" :
+            "keys" : 
             [
                 "ctrl+shift+6"
             ]
         },
         {
             "command" : "newTabProfile6",
-            "keys" :
+            "keys" : 
             [
                 "ctrl+shift+7"
             ]
         },
         {
             "command" : "newTabProfile7",
-            "keys" :
+            "keys" : 
             [
                 "ctrl+shift+8"
             ]
         },
         {
             "command" : "newTabProfile8",
-            "keys" :
+            "keys" : 
             [
                 "ctrl+shift+9"
-            ]
-        },
-        {
-            "command" : "nextTab",
-            "keys" :
-            [
-                "ctrl+tab"
-            ]
-        },
-        {
-            "command" : "openSettings",
-            "keys" :
-            [
-                "ctrl+,"
-            ]
-        },
-        {
-            "command" : "prevTab",
-            "keys" :
-            [
-                "ctrl+shift+tab"
-            ]
-        },
-        {
-            "command" : "scrollDown",
-            "keys" :
-            [
-                "ctrl+shift+down"
-            ]
-        },
-        {
-            "command" : "copy",
-            "keys" : 
-            [
-                "ctrl+c"
-            ]
-        },
-        {
-            "command" : "paste",
-            "keys" : 
-            [
-                "ctrl+v"
-            ]
-        },
-        {
-            "command" : "scrollDownPage",
-            "keys" : 
-            [
-                "ctrl+shift+pgdn"
-            ]
-        },
-        {
-            "command" : "scrollUp",
-            "keys" : 
-            [
-                "ctrl+shift+up"
-            ]
-        },
-        {
-            "command" : "scrollUpPage",
-            "keys" : 
-            [
-                "ctrl+shift+pgup"
             ]
         },
         {
