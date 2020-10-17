@@ -16,6 +16,7 @@
         - [使用 nvm 管理（安装） node](#使用-nvm-管理安装-node)
     - [laravel 开发](#laravel-开发)
       - [nginx](#nginx)
+        - [处理nginx启动错误Failed to read PID from file /run/nginx.pid](#处理nginx启动错误failed-to-read-pid-from-file-runnginxpid)
       - [php](#php)
       - [mysql](#mysql)
       - [nginx 配置](#nginx-配置)
@@ -81,6 +82,7 @@ plugins=(git zsh-autosuggestions)
 source ~/.zshrc
 
 # 安装 zsh-syntax-highlighting 语法高亮插件
+cd ~/.oh-my-zsh/custom/plugins
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
 echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
 source ~/.zshrc
@@ -97,6 +99,9 @@ source ~/.zshrc
 ```bash
 # npm
 sudo apt install npm
+# 如果报错 epends: node-gyp (>= 0.10.9) but it is not going to be installed ERROR
+sudo apt install nodejs-dev node-gyp libssl1.0-dev
+
 npm config get registry
 npm config set registry https://registry.npm.taobao.org
 
@@ -179,6 +184,28 @@ sudo service php7.1-fpm start
       2. sudo ln -s /etc/nginx/sites-avaliable/api.config /sites-enable
       3. sudo service nginx restart
 ```
+
+##### 处理nginx启动错误Failed to read PID from file /run/nginx.pid
+
+问题产生原因
+
+因为 nginx 启动需要一点点时间，而 systemd 在nginx 完成启动前就去读取 pid file造成读取 pid 失败
+
+解决方法
+
+让 systemd 在执行 ExecStart 的指令后等待一点点时间即可如果你的 nginx 启动需要时间更长，可以把 sleep 时间改长一点建立目录
+mkdir -p /etc/systemd/system/nginx.service.d
+在新建目录中建立文件override.conf，输入内容
+
+```bash
+[Service]
+ExecStartPost=/bin/sleep 0.1
+```
+
+systemctl daemon-reload
+systemctl restart nginx.service
+
+- [参考](https://blog.csdn.net/shllly99/article/details/88170750)
 
 #### php
 

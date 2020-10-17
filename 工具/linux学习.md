@@ -196,11 +196,29 @@ dmesg
 
 ### 查看端口、进程、杀死进程
 
-- ps -ef | grep php  表示查看所有进程里 CMD 是 php的进程信息
-- ps -aux | grep java  -aux 显示所有状态
-- kill pid 杀死指定pid进程
-- kill -9 pid 杀死进程   例如： kill -9 [PID]
-- netstat -tlnp :查看端口占用情况
+```bash
+# 表示查看所有进程里 CMD 是 php的进程信息
+ps -ef | grep php  
+# 显示所有状态
+ps -aux | grep java  -aux 
+# 杀死指定pid进程
+kill pid
+# 杀死进程   例如： kill -9 [PID]
+kill -9 pid
+# 查看端口占用情况
+netstat -tlnp
+# 查看已经连接的服务端口
+netstat -a
+# 查看指定端口，可以结合grep命令：
+netstat -ap | grep 8080
+# 使用lsof命令： 如果有显示说明已经开放了，如果没有显示说明没有开放
+lsof -i:8888
+# 若要关闭使用这个端口的程序，使用kill + 对应的pid
+kill -9 PID号
+# telnet ip  端口号   方式测试远程主机端口是否打开
+telnet 45.32.45.77 22
+# 端口检测工具 http://coolaf.com/tool/port
+```
 
 ### 终端命令历史
 
@@ -214,6 +232,7 @@ dmesg
 - tail -25 readme.txt          显示尾部25行
 
 #### cat 命令
+
 - cat error.log | grep -C 5 'nick' 显示file文件里匹配foo字串那行以及上下5行
 - cat error.log | grep -B 5 'nick' 显示foo及前5行
 - cat error.log | grep -A 5 'nick' 显示foo及后5行

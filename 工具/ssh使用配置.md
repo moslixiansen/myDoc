@@ -10,6 +10,8 @@
 - [免账号登录（配置账号别名）](#免账号登录配置账号别名)
 - [给终端配置alias](#给终端配置alias)
 - [ssh保持长连接的三种方式](#ssh保持长连接的三种方式)
+- [SSH无法连接之"connection reset by ip_address port 22"问题解决](#ssh无法连接之connection-reset-by-ip_address-port-22问题解决)
+- [REMOTE HOST IDENTIFICATION HAS CHANGED 问题解决](#remote-host-identification-has-changed-问题解决)
 
 <!-- /code_chunk_output -->
 
@@ -94,4 +96,41 @@ ServerAliveInterval 60
 ServerAliveCountMax 3
 
 # 在命令参数里ssh -o ServerAliveInterval=60 这样子只会在需要的连接中保持持久连接， 毕竟不是所有连接都要保持持久的
+```
+
+## SSH无法连接之"connection reset by ip_address port 22"问题解决
+
+如果服务器安装了open-ssh，然后发现客户端无法连接，并出现了
+connection reset by (server_ip_address) port 22
+那么你可以试试以下两个指令来重置ssh的配置。
+
+```bash
+sudo rm /etc/ssh/ssh_host_*
+sudo dpkg-reconfigure openssh-server
+```
+
+## REMOTE HOST IDENTIFICATION HAS CHANGED 问题解决
+
+报错信息如下：
+
+```bash
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ECDSA key sent by the remote host is
+SHA256:yH19wvFDgN6pioDVlNjSiF3tQiwZy0v/qMPMO6kR7Yg.
+Please contact your system administrator.
+Add correct host key in /c/Users/moslixiansen/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /c/Users/moslixiansen/.ssh/known_hosts:17
+ECDSA host key for 152.32.174.69 has changed and you have requested strict checking.
+Host key verification failed.
+```
+
+解决办法：
+
+```bash
+ssh-keygen -R 服务器端的ip地址
 ```
