@@ -128,3 +128,64 @@
 //   }
 // }
 
+
+// function New(fn, ...args) {
+//   const obj = Object.create(fn.prototype)
+//   const f = fn.bind(obj, ...args)
+//   const res = f()
+  
+//   return res || obj
+// }
+
+// function P(name, age) {
+//   this.name = name
+//   this.age = age
+// }
+
+// const p1 = New(P, 18, 'male')
+// console.log(p1)
+
+// timers pending callbacks idle,prepare poll check close callbacks
+
+
+
+
+
+
+
+class EventEmiter {
+  constructor () {
+    this.events = {}
+  }
+
+  on(type, cb) {
+    const event = this.events[type]
+    if(!event) {
+      this.events[type] = new Set()
+    }
+    this.events[type].add(cb)
+  }
+
+  emit(type, ...args) {
+    const event = this.events[type]
+    event && event.forEach(cb => cb(...args))
+  }
+
+  off(type, cb) {
+    const event = this.events[type]
+    if (event && event.has(cb)) {
+      event.delete(cb)
+    }
+    if (event && !event.size) {
+      delete this.events[type]
+    }
+  }
+
+  offAll(type) {
+    const event = this.events[type]
+    if (event) {
+      delete this.events[type]
+    }
+  }
+}
+

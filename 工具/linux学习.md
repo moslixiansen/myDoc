@@ -32,6 +32,7 @@
   - [shutter的安装以及 ctrl + alt + a 截图快捷键的设置](#shutter的安装以及-ctrl-alt-a-截图快捷键的设置)
   - [磁盘相关](#磁盘相关)
   - [设置快捷键相关](#设置快捷键相关)
+  - [linux基础系列文章](#linux基础系列文章)
   - [查看内存信息](#查看内存信息)
 
 <!-- /code_chunk_output -->
@@ -353,6 +354,15 @@ cd /opt/navicat120_premium_cs_x64
 ./start_navicat
 echo "starting navicat ..."
 ```
+
+### linux基础系列文章
+
+- [Linux分区与挂载](https://segmentfault.com/a/1190000021706561)
+- [Linux常用命令](https://segmentfault.com/a/1190000021950993)
+- [wget 与 curl 命令详解](https://segmentfault.com/a/1190000022301195)
+- [Linux软件安装归纳](https://segmentfault.com/a/1190000022371232)
+- [Linux 用户管理](https://segmentfault.com/a/1190000022424829)
+- [Linux权限管理](https://segmentfault.com/a/1190000022541406)
 
 ### 查看内存信息
 
