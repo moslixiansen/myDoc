@@ -32,6 +32,7 @@
   - [shutter的安装以及 ctrl + alt + a 截图快捷键的设置](#shutter的安装以及-ctrl-alt-a-截图快捷键的设置)
   - [磁盘相关](#磁盘相关)
   - [设置快捷键相关](#设置快捷键相关)
+  - [linux基础系列文章](#linux基础系列文章)
   - [查看内存信息](#查看内存信息)
 
 <!-- /code_chunk_output -->
@@ -228,8 +229,9 @@ telnet 45.32.45.77 22
 
 ### 查看文件、统计文件
 
-- head -6 readme.txt          显示头五行
+- head -6 readme.txt         显示头五行
 - tail -25 readme.txt          显示尾部25行
+- find ./ -name app.js        查找文件 app.js
 
 #### cat 命令
 
@@ -237,7 +239,9 @@ telnet 45.32.45.77 22
 - cat error.log | grep -B 5 'nick' 显示foo及前5行
 - cat error.log | grep -A 5 'nick' 显示foo及后5行
 - grep -o 'nick' error.log | wc -l 统计 nick 出现的次数
-- cat error.log | grep -A 5 'nick' | tail -n 100 显示foo及后5行 显示后100条记录
+- cat error.log | grep -A 5 'nick' | tail -n 100 显示foo及后5行 显示后100条
+- cat error.log | grep -r 5 'xxx' 同时返回文件名
+- cat * */* */*/* | grep 'xxx' 查找当前目录 当前目录子目录 及子目录的子目录
 - awk '条件 动作' 文件名
 - [awk 入门教程](http://www.ruanyifeng.com/blog/2018/11/awk.html)
 - [AWK 简明教程](https://coolshell.cn/articles/9070.html)
@@ -338,7 +342,8 @@ set completion-ignore-case on
 ### 磁盘相关
 
 - df -h 查看磁盘已使用空间
-- du -sh * 查看目录或文件占用大小
+- du -sh * 查看当前目录下的文件夹或文件占用空间大小
+- du -lh  --max-depth=1 查看当前目录下的文件夹占用空间大小
 
 ### 设置快捷键相关
 
@@ -353,6 +358,15 @@ cd /opt/navicat120_premium_cs_x64
 ./start_navicat
 echo "starting navicat ..."
 ```
+
+### linux基础系列文章
+
+- [Linux分区与挂载](https://segmentfault.com/a/1190000021706561)
+- [Linux常用命令](https://segmentfault.com/a/1190000021950993)
+- [wget 与 curl 命令详解](https://segmentfault.com/a/1190000022301195)
+- [Linux软件安装归纳](https://segmentfault.com/a/1190000022371232)
+- [Linux 用户管理](https://segmentfault.com/a/1190000022424829)
+- [Linux权限管理](https://segmentfault.com/a/1190000022541406)
 
 ### 查看内存信息
 
