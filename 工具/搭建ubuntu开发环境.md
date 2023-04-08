@@ -69,12 +69,14 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 # 修改主题 (推荐主题 fino-time)
 cd ~/.oh-my-zsh/themes/
 # 选择一个主题
-
+vim ~/.zshrc
+# 设置
+ZSH_THEME="fino-time"
 # 生效
 source ~/.zshrc
 
 # 安装 zsh-autosuggestions 历史命令提示（~/.oh-my-zsh/custom/plugins 目录下）
-git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions.git  $ZSH_CUSTOM/plugins/zsh-autosuggestions
 vim ~/.zshrc
 # 找到plugins=(git)这一行添加
 plugins=(git zsh-autosuggestions)
@@ -213,15 +215,29 @@ systemctl restart nginx.service
 # php
 sudo apt-add-repository ppa:ondrej/php
 sudo apt update
+# 安装php及其常用扩展
 sudo apt install -y php7.1 php7.1-mysql php7.1-fpm php7.1-curl php7.1-xml php7.1-mcrypt php7.1-json php7.1-gd php7.1-mbstring php7.1-zip php-mongodb php-memcached php-redis
 
+# 查看当前PHP配置文件中启用的扩展列表：
+sudo grep -rnw '/etc/php/7.4/fpm/php.ini' -e ";extension="
+
 # 注意: 若提示缺少PHP扩展，可用以下命令查询PHP模块扩展
+#这个命令的作用是在Ubuntu 20.04软件包列表中搜索以“php7.1-”开头的所有软件包。它将输出所有找到的软件包及其描述，您可以查看这些软件包是否与您的需求匹配，并选择安装适当的软件包。
+
+# 在Ubuntu中，“apt-cache search”命令用于搜索可用的软件包，而“php7.1-”则指定要搜索的软件包名称的前缀。该命令不仅适用于PHP软件包，还适用于其他软件包。
 sudo apt-cache search php7.1-
 # 安装扩展
 sudo apt install -y php7.1-mysql
+# 切换php版本(环境:ubuntu 20)
+sudo update-alternatives --config php # 在出现的界面键入要切换的序号
+# 如果php -v依然显示之前的版本,则再执行
+sudo update-alternatives --set php /usr/bin/php7.1
+# 重启fpm
+sudo systemctl restart php7.1-fpm.service
+
 ```
 
-- [参考:一文彻底解决UBUNTU上PHP的安装以及版本切换](https://feiffy.cc/blog/2018/03/27/install-php-in-ubuntu)
+- [参考:一文彻底解决UBUNTU上PHP的安装以及版本切换](https://www.cnblogs.com/feiffy/p/8660737.html)
 
 #### mysql
 

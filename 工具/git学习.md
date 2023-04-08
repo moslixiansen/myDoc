@@ -79,26 +79,31 @@ export LC_ALL="zh_CN.UTF-8"
 ### 规范 git commit
 
 ```bash
+# 项目安装
+npm i -D commitizen cz-conventional-changelog
 # 全局安装
-npm install -g commitizen
-npm install -g conventional-changelog
-npm install -g conventional-changelog-cli
+npm i -g commitizen cz-conventional-changelog
+# 生成全局配置文件
+echo '{ "path": "cz-conventional-changelog" }' > ~/.czrc
 
-# 查看以上是否安装成功
+#  配置项目package.json
+"config":{
+    "commitizen":{
+        "path":"node_modules/cz-conventional-changelog"
+    }
+}
+
+# 查看是否安装成功
 npm ls -g -depth=0
 
 # 安装成功显示如下:
 /usr/local/lib
 ├── commitizen@2.9.6
 ├── conventional-changelog@1.1.7
-├── conventional-changelog-cli@1.3.5
 └── npm@5.5.1
-
-# 生成全局配置文件
-echo '{ "path": "cz-conventional-changelog" }' > ~/.czrc
 ```
 
-- [参考链接: 阮一峰](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
+- [参考链接](https://juejin.cn/post/6844904025868271629)
 
 ### git rebase
 
