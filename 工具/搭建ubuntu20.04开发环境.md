@@ -5,25 +5,25 @@
 <!-- code_chunk_output -->
 
 - [搭建ubuntu16.04开发环境](#搭建ubuntu1604开发环境)
-  - [命令行相关](#命令行相关)
-    - [查看内存进程 （htop）](#查看内存进程-htop)
-    - [安装 oh-my-zsh](#安装-oh-my-zsh)
+  - [通用基础设施](#通用基础设施)
+    - [检查 ```vim```, ```htop``` 等工具是否已安装](#检查--vim--htop-等工具是否已安装)
+    - [更好用的shell - zsh(语法高亮\自动补全等)](#更好用的shell---zsh语法高亮自动补全等)
   - [开发相关](#开发相关)
     - [前端开发](#前端开发)
-      - [npm、yarn](#npm-yarn)
-      - [node](#node)
-        - [使用 n 管理（安装） node](#使用-n-管理安装-node)
-        - [使用 nvm 管理（安装） node](#使用-nvm-管理安装-node)
-    - [laravel 开发](#laravel-开发)
+      - [node、npm、yarn、n、nvm](#node-npm-yarn-n-nvm)
+    - [后台开发](#后台开发)
       - [nginx](#nginx)
         - [处理nginx启动错误Failed to read PID from file /run/nginx.pid](#处理nginx启动错误failed-to-read-pid-from-file-runnginxpid)
       - [php](#php)
       - [mysql](#mysql)
+        - [使用密码登录mysql](#使用密码登录mysql)
+        - [远程登录](#远程登录)
+        - [mycli 语法高亮 sql提示等](#mycli-语法高亮-sql提示等)
       - [nginx 配置](#nginx-配置)
       - [composer](#composer)
       - [apache](#apache)
       - [laravel 报错处理](#laravel-报错处理)
-  - [其它可选软件](#其它可选软件)
+  - [其它软件](#其它软件)
     - [时间设置](#时间设置)
     - [安装unrar](#安装unrar)
     - [安装lnav](#安装lnav)
@@ -45,32 +45,35 @@
 
 <!-- /code_chunk_output -->
 
-## 命令行相关
+## 通用基础设施
 
-### 查看内存进程 （htop）
+### 检查 ```vim```, ```htop``` 等工具是否已安装
 
 ```bash
-sudo apt-get install vim htop
+# 若未安装则安装下
+sudo apt install vim htop
 ```
 
-### 安装 oh-my-zsh
+### 更好用的shell - zsh(语法高亮\自动补全等)
 
 ```bash
 # 安装zsh
-sudo apt-get install zsh
-
+sudo apt install zsh
 # 把默认的Shell改成zsh, 注意：不要使用sudo
 chsh -s /bin/zsh
-
 # 把第一行的/bin/bash改成/bin/zsh，这个是root用户的。
 sudo vim /etc/passwd
+# 执行安装脚本
+# 这里可能出现 The TLS connection was non-properly terminated. 原因可能是网络问题,多试几次就好了。
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-# 修改主题 (推荐主题 fino-time)
+# 如果想快点安装好可以直接新建 install.sh
+vim zsh-install.sh
+sudo chmod +x zsh-install.sh  or bash zsh-install.sh
+rm zsh-install.sh
+# 修改主题 (推荐使用 fino-time)
 cd ~/.oh-my-zsh/themes/
 # 选择一个主题
 vim ~/.zshrc
-# 设置
 ZSH_THEME="fino-time"
 # 生效
 source ~/.zshrc
@@ -88,77 +91,73 @@ cd ~/.oh-my-zsh/custom/plugins
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
 echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
 source ~/.zshrc
+
+# 修改主机名
+hostnamectl set-hostname new-hostname
+# 实际相当于将下面两个文件的主机名改过来
+sudo vim /etc/hostname
+sudo vim /etc/hosts 
+# 重启生效
+sudo reboot
 ```
 
-- [参考](https://www.cnblogs.com/easonjim/p/7863099.html)
+- [zsh官网](https://github.com/ohmyzsh/ohmyzsh)
 
 ## 开发相关
 
 ### 前端开发
 
-#### npm、yarn
+#### node、npm、yarn、n、nvm
 
 ```bash
-# npm
-sudo apt install npm
-# 如果报错 epends: node-gyp (>= 0.10.9) but it is not going to be installed ERROR
-sudo apt install nodejs-dev node-gyp libssl1.0-dev
-
+# node npm
+sudo apt update
+sudo apt install nodejs npm
+node -v
+npm -v
+# 查看源
 npm config get registry
+# 淘宝
 npm config set registry https://registry.npm.taobao.org
 
-# yarn
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update && sudo apt-get install yarn
-```
-
-- [yarn安装](https://yarn.bootcss.com/docs/install/#debian-stable)
-
-#### node
-
-##### 使用 n 管理（安装） node
-
-```bash
-# node 使用 n 安装 node
-npm install -g n
-
+# 使用 n 安装/管理 node
+sudo npm install -g n
 # 常用命令
-n stable # 稳定版 stable
+sudo n stable # 稳定版 stable
 n latest # 最新版
 # 具体版本号
-n v12.1
-
+sudo n v12.1
 n --help
-```
 
-##### 使用 nvm 管理（安装） node
-
-```bash
 # 首先安装必要的包
 sudo apt-get update
 sudo apt-get install build-essential libssl-dev
 
 # 安装nvm的脚本，有两种方法 curl 或 wget
+# 参考：https://github.com/nvm-sh/nvm#system-version-of-node
   # curl
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.4/install.sh | bash
   # wget
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.31.4/install.sh | bash
-
 # 让 nvm 命令生效
 source ~/.zshrc
-
 # 常用命令
 nvm install v0.10.32                  # Install a specific version number
 nvm use 0.10                          # Use the latest available 0.10.x release
 nvm run 0.10.32 app.js                # Run app.js using node v0.10.32
 nvm exec 0.10.32 node app.js          # Run `node app.js` with the PATH pointingto node v0.10.32
 nvm alias default 0.10.32             # Set default node version on a shell
+
+# yarn https://yarn.bootcss.com/docs/install/#debian-stable
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update && sudo apt install yarn
+ # 通过 npm 安装 yarn
+sudo npm install --global yarn
+yarn --version
 ```
 
-- [参考：nvm github](https://github.com/nvm-sh/nvm#system-version-of-node)
-
-### laravel 开发
+### 后台开发
 
 #### nginx
 
@@ -242,11 +241,121 @@ sudo systemctl restart php7.1-fpm.service
 #### mysql
 
 ```bash
-# mysql
-sudo apt install mysql-server mysql-client
+# Ubuntu 源仓库中最新的 MySQL 版本号是 MySQL 8.0，安装命令：
+sudo apt update
+sudo apt install mysql-server
+# 一旦安装完成，MySQL 服务将会自动启动。验证 MySQL 服务器正在运行：
+sudo systemctl status mysql
 
-# 注意:期间要设置密码，填两次密码
+# 保护加固 MySQL
+# MySQL 安装文件附带了一个名为mysql_secure_installation的脚本，它允许你很容易地提高数据库服务器的安全性。
+# 不带参数运行这个脚本：
+sudo mysql_secure_installation
+# VALIDATE PASSWORD COMPONENT.....（使用密码强度校验组件） 输入： n
+# New Password:（设置新密码,并重复一遍)
+# Remove anonymous users (删除匿名用户) n
+# Disallow root login remotely(拒绝远程root账号登录） n
+# Remove test database and access to it(移除test数据库） n
+# Reload privilege tables now (现在就重新载入权限表） y
 ```
+
+##### 使用密码登录mysql
+
+在 Ubuntu 20.04 中安装 MySQL 8.0 后，默认的身份验证方式是 auth_socket。这意味着，可以通过系统用户身份验证连接到 MySQL 服务器，而无需输入密码。
+
+如果您想要更改为使用密码进行身份验证，则需要执行以下步骤：
+
+1. 以 root 身份登录到 MySQL：
+    ```
+    sudo mysql -u root
+    ```
+
+2. 创建一个新的 MySQL 用户，并设置其密码：
+
+    ```sql
+    use mysql;
+    CREATE USER 'deploy'@'%' IDENTIFIED BY 'your_password';
+    ```
+    
+    其中，new_user 是新创建的用户名，your_password 是该用户的密码。
+
+3. 授予新用户适当的权限：
+
+    ```sql
+    GRANT ALL PRIVILEGES ON *.* TO 'deploy'@'%' WITH GRANT OPTION;
+    # 刷新权限
+    FLUSH PRIVILEGES;
+    ```
+
+4. 退出 MySQL：
+
+    ```sql
+    EXIT;
+    ```
+
+5. 修改 MySQL 配置文件（/etc/mysql/mysql.conf.d/mysqld.cnf），将 auth_socket 改为 mysql_native_password：
+
+    ```
+    # Replace this line
+    auth_socket = /var/run/mysqld/mysqld.sock
+
+    # With this line
+    default_authentication_plugin = mysql_native_password
+    ```
+
+6. 重新启动 MySQL 服务：
+
+    ```
+    sudo systemctl restart mysql
+    ```
+
+接下来，就可以使用新创建的用户和密码进行身份验证了。
+
+记得在服务器的防火墙开放3306端口。
+
+
+#####  远程登录
+
+假定： 设置允许 IP 地址为 120.78.13.180 的主机进行远程连接
+
+```sql
+# 在 MySQL 服务器上创建用户，并授予该用户来自特定 IP 地址的连接权限。
+CREATE USER 'new_user'@'120.78.13.180' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON *.* TO 'new_user'@'120.78.13.180' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+
+# 查看具有GRANT权限的用户列表：
+SELECT User, Grant_priv, Host FROM mysql.user;
+# 如果“Grant_priv”列中的值为“Y”，则表示该用户具有GRANT权限。如果“Grant_priv”列中的值为“N”，则表示该用户没有GRANT权限。
+
+# 请注意，您需要以具有至少“SELECT”权限的MySQL用户身份登录才能运行此命令。
+```
+
+确保服务器上的防火墙已打开 MySQL 端口（通常是3306）。可以使用以下命令检查
+
+```bash
+sudo ufw allow mysql
+```
+
+远程登录
+
+```bash
+mysql -u new_user -h server_ip_address -p
+```
+
+- [参考:Ubuntu20.04 安装和卸载MySQL8](https://www.cnblogs.com/zhangxuel1ang/p/13456116.html)
+
+##### mycli 语法高亮 sql提示等
+
+```bash
+sudo apt install mycli
+#使用
+sudo mycli # 相当于 sudo mysql
+mycli -udeploy
+```
+
+- [参考:官网](https://github.com/dbcli/mycli)
 
 #### nginx 配置
 
@@ -379,7 +488,7 @@ php artisan optimize
 
 - [php artisan optimize：作用参考链接]( https://mp.weixin.qq.com/s?__biz=MzI5MDcyODM1OA%3D%3D&mid=2247483733&idx=1&sn=190bd31a7d740e7d4fb894de0707dceb&chksm=ec1a319cdb6db88a8a753602a987e491033bc8ae0ffed977ac3174a26b9af11654966e6e2c72)
 
-## 其它可选软件
+## 其它软件
 
 ### 时间设置
 
